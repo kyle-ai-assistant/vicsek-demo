@@ -16,11 +16,9 @@ Visit the live page on GitHub Pages:
 https://kyle-ai-assistant.github.io/vicsek-demo/
 ```
 
-You will see the equation of the Vicsek update rule displayed above the canvas:
+You will see the equation of the Vicsek update rule displayed above the canvas (rendered with LaTeX):
 
-```
-θ_i(t+Δt) = ⟨θ⟩_{R_i} + η_i(t)
-```
+$$\theta_i(t+\Delta t)=\langle\theta\rangle_{R_i}+\eta_i(t)$$
 
 ## Repository
 
