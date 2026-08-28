@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Vicsek Model Demo</title>
+<style>
+  body {font-family: Arial, sans-serif; margin: 0; padding: 0; background:#f0f0f0;}
+  #controls {padding:10px; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.1); display:flex; align-items:center; gap:20px;}
+  #canvas {display:block; margin:0 auto; background:#000;}
+  label {font-weight:bold;}
+</style>
+</head>
+<body>
+<div id="controls">
+  <label>Noise: <input type="range" id="noise" min="0" max="1" step="0.01" value="0.2" /> <span id="noiseVal">0.20</span></label>
+  <label>Density: <input type="range" id="density" min="50" max="500" step="10" value="200" /> <span id="densityVal">200</span></label>
+  <label>Velocity: <input type="range" id="velocity" min="0.5" max="5" step="0.1" value="2" /> <span id="velVal">2.0</span></label>
+</div>
+<canvas id="canvas" width="800" height="600"></canvas>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const width = canvas.width, height = canvas.height;
+let particles = [];
+let noise = parseFloat(document.getElementById('noise').value);
+let density = parseInt(document.getElementById('density').value);
+let velocity = parseFloat(document.getElementById('velocity').value);
+const radius = 10; // interaction radius
+
+function initParticles(){
+  const N = Math.round(density * 0.5); // scale density to reasonable count
+  particles = [];
+  for(let i=0;i<N;i++){
+    particles.push({
+      x: Math.random()*width,
+      y: Math.random()*height,
+      angle: Math.random()*2*Math.PI
+    });
+  }
+}
+
+function step(){
+  const newAngles = new Array(particles.length);
+  for(let i=0;i<particles.length;i++){
+    const p = particles[i];
+    let sinSum=0, cosSum=0, count=0;
+    for(let j=0;j<particles.length;j++){
+      const q = particles[j];
+      const dx = ((q.x - p.x + width/2) % width) - width/2; // toroidal distance
+      const dy = ((q.y - p.y + height/2) % height) - height/2;
+      const dist2 = dx*dx + dy*dy;
+      if(dist2 <= radius*radius){
+        sinSum += Math.sin(q.angle);
+        cosSum += Math.cos(q.angle);
+        count++;
+      }
+    }
+    const avgAngle = Math.atan2(sinSum/count, cosSum/count);
+    const eta = (Math.random()-0.5)*2*noise; // uniform noise in [-noise, noise]
+    newAngles[i] = avgAngle + eta;
+  }
+  // update positions
+  for(let i=0;i<particles.length;i++){
+    const p = particles[i];
+    p.angle = newAngles[i];
+    p.x = (p.x + velocity*Math.cos(p.angle) + width) % width;
+    p.y = (p.y + velocity*Math.sin(p.angle) + height) % height;
+  }
+}
+
+function draw(){
+  ctx.clearRect(0,0,width,height);
+  ctx.fillStyle = '#0ff';
+  for(const p of particles){
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2, 0, 2*Math.PI);
+    ctx.fill();
+  }
+}
+
+function loop(){
+  step();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+// UI listeners
+document.getElementById('noise').addEventListener('input', e=>{noise=parseFloat(e.target.value); document.getElementById('noiseVal').textContent=noise.toFixed(2);});
+document.getElementById('density').addEventListener('input', e=>{density=parseInt(e.target.value); document.getElementById('densityVal').textContent=density; initParticles();});
+document.getElementById('velocity').addEventListener('input', e=>{velocity=parseFloat(e.target.value); document.getElementById('velVal').textContent=velocity.toFixed(1);});
+
+initParticles();
+loop();
+</script>
+</body>
+</html>
