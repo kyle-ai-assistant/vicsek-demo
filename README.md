@@ -10,6 +10,8 @@ The simulation runs **entirely in the visitor’s browser** – GitHub Pages onl
 
 ## Live demo
 
+*All equations shown for human readers are written in LaTeX and will be rendered by MathJax.*
+
 Visit the live page on GitHub Pages:
 
 ```
