@@ -1,28 +1,40 @@
 # Project Hand‑off
 
-**Repository:** https://github.com/kyle-ai-assistant/simple-project
-**Created on:** 2026-08-29
+**Repository:** https://github.com/kyle-ai-assistant/vicsek-demo
+**Created on:** 2026-08-31
 **Created by:** kyle‑ai‑assistant (GitHub user)
 
 ## Current Stage
-- Repository initialized locally and linked to the remote GitHub repo.
-- Added interactive Vicsek model demo (`index.html`).
-- Committed `HANDOFF.md` and demo files on branch `main`.
-- Pushed the initial commit to GitHub.
+- Local repository initialized and linked to the remote GitHub repository.
+- Added interactive Vicsek model demo (`index.html`) with real‑time energy and momentum metrics.
+- Committed `HANDOFF.md`, `README.md`, and demo files on branch `main`.
+- Deployed to GitHub Pages (`https://kyle-ai-assistant.github.io/vicsek-demo/`).
 
-## Next Steps (if extending)
-1. **Enhance the simulation** – add more visual styling, parameter ranges, or additional metrics.
-2. **Documentation** – flesh out a README with usage instructions and a brief theory overview.
-3. **GitHub Pages** – enable GitHub Pages to host the demo at `https://kyle-ai-assistant.github.io/simple-project/`.
-4. **CI workflow** – add a simple GitHub Actions workflow to lint HTML/JS and run a headless browser test.
-5. **Issue backlog** – create GitHub Issues for features (e.g., adding particle trails, saving configurations).
+## Technical Details (for developers)
+- **Language/Framework:** Pure HTML5, CSS, vanilla JavaScript. No external dependencies beyond MathJax CDN for LaTeX rendering.
+- **Key Files:**
+  - `index.html` – main simulation page, includes UI controls, metric calculations, and the simulation loop.
+  - `README.md` – usage guide and model description (updated with a concise introduction).
+- **Simulation Mechanics:**
+  - Particles are stored as objects `{x, y, angle}`.
+  - Interaction radius is fixed at 10 px (toroidal distance).
+  - Energy computed as `0.5 * N * v²` per frame.
+  - Total momentum vector and its magnitude are calculated each step and displayed.
+- **Build/Deploy:**
+  - No build step required; static assets served directly via GitHub Pages.
+  - `git push -u origin main` automatically updates the live demo.
+- **Future Development Suggestions:**
+  1. Parameterize interaction radius and enable user control.
+  2. Add visual trails or color‑coded headings.
+  3. Introduce a simple CI workflow (HTML/JS linting, headless‑browser smoke test).
+  4. Extend documentation with a Theory section and references.
 
 ## Important Git Steps Performed
 1. `git init` – created a new local repository.
-2. `git remote add origin https://github.com/kyle-ai-assistant/simple-project.git` – linked remote.
+2. `git remote add origin https://github.com/kyle-ai-assistant/vicsek-demo.git` – linked remote.
 3. `git checkout -b main` – created and switched to `main` branch.
-4. `git add .` – staged `HANDOFF.md` and `index.html`.
-5. `git commit -m "Add Vicsek model demo and handoff"` – recorded the initial commit.
+4. `git add .` – staged all project files.
+5. `git commit -m "Add Vicsek model demo with energy/momentum metrics and documentation"` – recorded the initial commit.
 6. `git push -u origin main` – pushed to GitHub and set upstream tracking.
 
 ## Repository Details
