@@ -31,6 +31,8 @@
   <label>Density: <input type="range" id="density" min="50" max="500" step="10" value="200" /> <span id="densityVal">200</span></label>
   <label>Velocity: <input type="range" id="velocity" min="0.5" max="5" step="0.1" value="2" /> <span id="velVal">2.0</span></label>
   <label>Interaction radius: <input type="range" id="radius" min="5" max="30" step="1" value="10" /> <span id="radiusVal">10</span></label>
+  <label>Energy: <span id="energyVal">0</span></label>
+  <label>Momentum: <span id="momentumVal">(0, 0)</span></label>
 </div>
 <!-- NOTE: All equations displayed for human readers should be written in LaTeX and will be rendered by MathJax -->
 <div id="simulation"><div id="equation">\(\theta_i(t+\Delta t)=\langle\theta\rangle_{R_i}+\eta_i(t)\)</div><canvas id="canvas" width="800" height="600"></canvas></div>
@@ -83,6 +85,16 @@ function step(){
     p.x = (p.x + velocity*Math.cos(p.angle) + width) % width;
     p.y = (p.y + velocity*Math.sin(p.angle) + height) % height;
   }
+  // --- new metrics calculation ---
+  const N = particles.length;
+  const totalEnergy = 0.5 * N * velocity * velocity;
+  let totalPx = 0, totalPy = 0;
+  for(const p of particles){
+    totalPx += velocity * Math.cos(p.angle);
+    totalPy += velocity * Math.sin(p.angle);
+  }
+  document.getElementById('energyVal').textContent = totalEnergy.toFixed(2);
+  document.getElementById('momentumVal').textContent = `(${totalPx.toFixed(2)}, ${totalPy.toFixed(2)})`;
 }
 
 function draw(){
